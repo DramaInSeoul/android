@@ -30,6 +30,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
     static ArrayList<Picture> pictureArrayList;
+    String dramaTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
         //이전 Activity 에서 가져온 Intent
         Intent intent = getIntent();
-        final String dramaTitle = (String) intent.getExtras().get("dramaName");
+        dramaTitle = (String) intent.getExtras().get("dramaName");
         pictureArrayList = (ArrayList<Picture>) intent.getSerializableExtra("pictureList");
         String dramaDescription = (String) intent.getExtras().get("dramaContext");
         String subDramaImage = (String) intent.getExtras().get("subImageUrl");
@@ -68,18 +69,16 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng position = new LatLng(37.576034, 126.98705199999995);
+        mMap.addMarker(new MarkerOptions().position(position).title(dramaTitle + "촬영지"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+
     }
 
     private void initHorizontalScene() {
         mBinding.scenePanel.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mBinding.scenePanel.setHasFixedSize(true);
-
         HorizontalSceneAdapter mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
-
         mBinding.scenePanel.setAdapter(mAdapter);
 
     }
