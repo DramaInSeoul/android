@@ -3,8 +3,10 @@ package gukbab1216.com.chalkak;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -47,6 +49,14 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         ImageView imageView = findViewById(R.id.thumbnail_drama);
         Glide.with(this).load(subDramaImage).into(imageView);
 
+        FloatingActionButton nextFabBtn = findViewById(R.id.nextCameraFloatingButton);
+        nextFabBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SceneMapActivity.this, CameraActivity.class));
+
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
