@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import gukbab1216.com.chalkak.Model.DramaDto;
 import gukbab1216.com.chalkak.Model.Picture;
 
 public class MomentActivity extends AppCompatActivity implements ValueEventListener {
@@ -23,6 +24,7 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
     String dramaTitle;
     String dramaDescription;
     String korDramaName;
+    String subImageUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +38,6 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
     @Override
     protected void onStart() {
         super.onStart();
-
         //이전 Activity 에서 가져온 Intent
         Intent intent = getIntent();
         dramaTitle = (String) intent.getExtras().get("dramaName");
@@ -57,19 +58,25 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
             picturesList.add(pictures);
         }
         for (DataSnapshot dataSnapshot1 : dataSnapshot.child("DramaData").child(dramaTitle).getChildren()) {
-
+            if (dataSnapshot1.getKey().equals("title")) {
+                korDramaName = (String) dataSnapshot1.getValue();
+            }
+            if (dataSnapshot1.getKey().equals("subImage")) {
+                subImageUrl = (String) dataSnapshot1.getValue();
+            }
         }
-        nextPage(dramaTitle, dramaDescription);
+        nextPage(dramaDescription);
     }
 
-    private void nextPage(String dramaTitle, String dramaDescription) {
+    private void nextPage(String dramaDescription) {
 
         Intent it = new Intent(this, SceneMapActivity.class);
         it.putExtra("pictureList", picturesList);
         it.putExtra("dramaName", korDramaName);
         it.putExtra("dramaContext", dramaDescription);
+        it.putExtra("subImageUrl", subImageUrl);
         startActivity(it);
-
+        this.finish();
     }
 
     @Override

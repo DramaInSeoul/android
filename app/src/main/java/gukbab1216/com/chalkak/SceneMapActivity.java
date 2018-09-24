@@ -5,8 +5,10 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,8 +39,14 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         final String dramaTitle = (String) intent.getExtras().get("dramaName");
         pictureArrayList = (ArrayList<Picture>) intent.getSerializableExtra("pictureList");
         String dramaDescription = (String) intent.getExtras().get("dramaContext");
+        String subDramaImage = (String) intent.getExtras().get("subImageUrl");
 
-        mBinding.setDrama(new Drama(dramaTitle, "", R.drawable.thumbnail_mylovefromthestar, dramaDescription));
+
+        mBinding.setDrama(new Drama(dramaTitle, "", 0, dramaDescription));
+
+        ImageView imageView = findViewById(R.id.thumbnail_drama);
+        Glide.with(this).load(subDramaImage).into(imageView);
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
