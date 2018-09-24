@@ -5,17 +5,30 @@ import java.util.ArrayList;
 
 public class DramaDto implements Serializable {
 
-    String title, image, description;
-    ArrayList<Picture> pictures;
-
+    private String compareTitle;
+    private String description, image;
+    private ArrayList<Picture> pictures;
+    private String subImage;
+    private String title;
 
     public DramaDto() {
     }
 
-    public DramaDto(String title, String image, String description) {
-        this.title = title;
-        this.image = image;
+    public DramaDto(String compareTitle, String description, String image, ArrayList<Picture> pictures, String subImage, String title) {
+        this.compareTitle = compareTitle;
         this.description = description;
+        this.image = image;
+        this.pictures = pictures;
+        this.subImage = subImage;
+        this.title = title;
+    }
+
+    public String getSubImage() {
+        return subImage;
+    }
+
+    public void setSubImage(String subImage) {
+        this.subImage = subImage;
     }
 
     public String getTitle() {
@@ -48,5 +61,13 @@ public class DramaDto implements Serializable {
 
     public void setPictures(ArrayList<Picture> pictures) {
         this.pictures = pictures;
+    }
+
+    public String getCompareTitle() {
+        return compareTitle;
+    }
+
+    public void setCompareTitle(String compareTitle) {
+        this.compareTitle = compareTitle;
     }
 }

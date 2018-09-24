@@ -1,9 +1,13 @@
 package gukbab1216.com.chalkak.Model;
 
-class Picture {
+import java.io.Serializable;
+
+public class Picture implements Serializable {
+
     String imgUrl;
     int latitude;
     int longitude;
+    String posTitle;
 
     public String getImgUrl() {
         return imgUrl;
@@ -29,12 +33,21 @@ class Picture {
         this.longitude = longitude;
     }
 
+    public String getPosTitle() {
+        return posTitle;
+    }
+
+    public void setPosTitle(String posTitle) {
+        this.posTitle = posTitle;
+    }
+
     @Override
     public String toString() {
         return "Picture{" +
                 "imgUrl='" + imgUrl + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", posTitle='" + posTitle + '\'' +
                 '}';
     }
 }

@@ -18,13 +18,14 @@ import java.util.ArrayList;
 
 import gukbab1216.com.chalkak.Adapter.HorizontalSceneAdapter;
 import gukbab1216.com.chalkak.Model.Drama;
-import gukbab1216.com.chalkak.Model.Scene;
+import gukbab1216.com.chalkak.Model.Picture;
 import gukbab1216.com.chalkak.databinding.ActivitySceneMapBinding;
 
 public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ActivitySceneMapBinding mBinding;
 
     private GoogleMap mMap;
+    static ArrayList<Picture> pictureArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
 
         //이전 Activity 에서 가져온 Intent
         Intent intent = getIntent();
-        String dramaTitle = (String)intent.getExtras().get("dramaName");
+        final String dramaTitle = (String) intent.getExtras().get("dramaName");
+        pictureArrayList = (ArrayList<Picture>) intent.getSerializableExtra("pictureList");
         String dramaDescription = (String) intent.getExtras().get("dramaContext");
 
         mBinding.setDrama(new Drama(dramaTitle, "", R.drawable.thumbnail_mylovefromthestar, dramaDescription));
@@ -58,17 +60,9 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         mBinding.scenePanel.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mBinding.scenePanel.setHasFixedSize(true);
 
-        ArrayList<Scene> items = new ArrayList<>();
-        items.add(new Scene("aaa", "", 0, ""));
-        items.add(new Scene("aaa", "", 0, ""));
-        items.add(new Scene("aaa", "", 0, ""));
-        items.add(new Scene("aaa", "", 0, ""));
-        items.add(new Scene("aaa", "", 0, ""));
+        HorizontalSceneAdapter mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
 
-        //set data and list adapter
-        HorizontalSceneAdapter mAdapter = new HorizontalSceneAdapter(this, items);
         mBinding.scenePanel.setAdapter(mAdapter);
-
 
     }
 }

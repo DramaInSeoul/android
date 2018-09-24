@@ -7,21 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import gukbab1216.com.chalkak.Model.Scene;
+import gukbab1216.com.chalkak.Model.Picture;
 import gukbab1216.com.chalkak.R;
-import gukbab1216.com.chalkak.databinding.ItemSceneMapBinding;
 
 public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalSceneAdapter.ViewHolder> {
-    private List<Scene> mItems;
+    private List<Picture> mItems;
     private Context mContext;
 
-    public HorizontalSceneAdapter(Context context, List<Scene> items) {
-        mItems= items;
+    public HorizontalSceneAdapter(Context context, List<Picture> items) {
+        mItems = items;
         mContext = context;
     }
 
@@ -34,29 +34,12 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final Scene scene = mItems.get(position);
+        final Picture picture = mItems.get(position);
 
-// displaying text view data
-        if(position==0){
-            holder.mThumbnail.setImageDrawable(mContext.getDrawable(R.drawable.myway_place01));
-            holder.mTitle.setText("来自星星的你");
-        }
-        if(position==1){
-            holder.mThumbnail.setImageDrawable(mContext.getDrawable(R.drawable.myway_place02));
-            holder.mTitle.setText("来自星星的你");
-        }
-        if(position==2){
-            holder.mThumbnail.setImageDrawable(mContext.getDrawable(R.drawable.myway_place03));
-            holder.mTitle.setText("来自星星的你");
-        }
-        if(position==3){
-            holder.mThumbnail.setImageDrawable(mContext.getDrawable(R.drawable.myway_place04));
-            holder.mTitle.setText("来自星星的你");
-        }
-        if(position==4){
-            holder.mThumbnail.setImageDrawable(mContext.getDrawable(R.drawable.myway_place05));
-            holder.mTitle.setText("来自星星的你");
-        }
+        String posTitle = picture.getPosTitle();
+
+        Glide.with(mContext).load(picture.getImgUrl()).into(holder.mThumbnail);
+        holder.mTitle.setText(posTitle);
 
     }
 
@@ -65,14 +48,13 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         return mItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView mThumbnail;
-        public TextView mTitle;
+        ImageView mThumbnail;
+        TextView mTitle;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
-
             mThumbnail = view.findViewById(R.id.thumbnail_scene);
             mTitle = view.findViewById(R.id.title_scene);
         }

@@ -1,20 +1,16 @@
 package gukbab1216.com.chalkak;
 
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import gukbab1216.com.chalkak.Adapter.CustomAdapter;
@@ -108,8 +103,13 @@ public class MainActivity extends AppCompatActivity {
             String dramaName = (String) textView.getText();
             String dramaContext = (String) textView1.getText();
 
+            if (dramaName.equals("도깨비")) {
+                dramaName = "A Goblin";
+            }
+
+
             //다음 Activity로 넘길 드라마 제목과 드라마 설명
-            Intent intent = new Intent(context, SceneMapActivity.class);
+            Intent intent = new Intent(context, MomentActivity.class);
             intent.putExtra("dramaName", dramaName);
             intent.putExtra("dramaContext", dramaContext);
 
