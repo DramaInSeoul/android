@@ -3,11 +3,13 @@ package gukbab1216.com.chalkak.Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -37,7 +39,6 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         final Picture picture = mItems.get(position);
 
         String posTitle = picture.getPosTitle();
-
         Glide.with(mContext).load(picture.getImgUrl()).into(holder.mThumbnail);
         holder.mTitle.setText(posTitle);
 
@@ -48,7 +49,7 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         return mItems.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView mThumbnail;
         TextView mTitle;
@@ -57,6 +58,14 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
             super(view);
             mThumbnail = view.findViewById(R.id.thumbnail_scene);
             mTitle = view.findViewById(R.id.title_scene);
+            mThumbnail.setOnClickListener(this);
+            mTitle.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            System.out.println(mTitle.getText());
         }
     }
 }

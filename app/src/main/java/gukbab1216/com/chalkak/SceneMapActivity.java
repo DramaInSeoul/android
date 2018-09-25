@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -81,7 +83,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         HorizontalSceneAdapter mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
         mBinding.scenePanel.setAdapter(mAdapter);
 
-        System.out.println(mAdapter.getItemId(0));
-
     }
+
+
 }
