@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#aa1860</color>
-    <color name="colorPrimaryDark">#aa1860</color>
+    <color name="colorPrimary">#2929cc</color>
+    <color name="colorPrimaryDark">#2929cc</color>
     <color name="colorPrimaryLight">#1E88E5</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorAccentDark">#F50057</color>
+    <color name="colorAccentDark">#2929cc</color>
     <color name="colorAccentLight">#FF80AB</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="appColor">#b72652</color>
+    <color name="appColor">#2929cc</color>
     <color name="color_white">#fefefe</color>
     <color name="transparent">#00000000</color>
 

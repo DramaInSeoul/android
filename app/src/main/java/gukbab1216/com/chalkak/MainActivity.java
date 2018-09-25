@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         TextView dramaNameTextView = findViewById(R.id.toolbarAppName);
         TextView mainContext = findViewById(R.id.mainContext);
 
-        dramaNameTextView.setText("PickD");
-        mainContext.setText("Pick Your Drama For your Tour");
+        dramaNameTextView.setText("Drama In Seoul");
+        mainContext.setText("당신의 드라마를 선택하세요");
 
         myOnClickListener = new MyOnClickListener(this);
 
@@ -107,6 +107,20 @@ public class MainActivity extends AppCompatActivity {
                 dramaName = "A Goblin";
             } else if (dramaName.equals("쌈마이웨이")) {
                 dramaName = "BFight for My Way";
+            } else if (dramaName.equals("미녀의 탄생")) {
+                dramaName = "Cirth of a Beauty";
+            } else if (dramaName.equals("태양의 후예")) {
+                dramaName = "Descendants of The Sun";
+            } else if (dramaName.equals("닥터 이방인")) {
+                dramaName = "Doctor of Medicine";
+            } else if (dramaName.equals("별에서 온 그대")) {
+                dramaName = "My Love From the Star";
+            } else if (dramaName.equals("상속자")) {
+                dramaName = "The Inheritors";
+            } else if (dramaName.equals("함부로 애틋하게")) {
+                dramaName = "Uncontrollably Fond";
+            }else if (dramaName.equals("드라마 준비중")) {
+                dramaName = "zPreparing Image";
             }
 
 
