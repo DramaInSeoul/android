@@ -81,5 +81,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         HorizontalSceneAdapter mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
         mBinding.scenePanel.setAdapter(mAdapter);
 
+        System.out.println(mAdapter.getItemId(0));
+
     }
 }

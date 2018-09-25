@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (dramaName.equals("도깨비")) {
                 dramaName = "A Goblin";
+            } else if (dramaName.equals("쌈마이웨이")) {
+                dramaName = "BFight for My Way";
             }
 
 

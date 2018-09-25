@@ -16,6 +16,7 @@
 
 package gukbab1216.com.chalkak.Camera;
 
+import android.content.Context;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,6 +36,7 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
+import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -71,11 +73,13 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
@@ -95,6 +99,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import gukbab1216.com.chalkak.CameraActivity;
 import gukbab1216.com.chalkak.R;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -136,6 +141,11 @@ import okhttp3.Response;
  */
 public class Camera2RawFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
+
+    private boolean flashFlag=false;
+
+    public static final String CAMERA_FRONT = "1";
+    public static final String CAMERA_BACK = "0";
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -284,7 +294,7 @@ public class Camera2RawFragment extends Fragment
     /**
      * ID of the current {@link CameraDevice}.
      */
-    private String mCameraId;
+    private String mCameraId = CAMERA_BACK;
 
     /**
      * A {@link CameraCaptureSession } for camera preview.
@@ -558,13 +568,13 @@ public class Camera2RawFragment extends Fragment
                             .post(requestBody)
                             .build();
 
-                        try (Response response = client.newCall(request).execute()) {
-                            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                    try (Response response = client.newCall(request).execute()) {
+                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-                            System.out.println(response.body().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println(response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }).start();
 
@@ -727,6 +737,82 @@ public class Camera2RawFragment extends Fragment
                 takePicture();
                 break;
             }
+            //backbutton
+            case R.id.imageButton5: {
+                getActivity().finish();
+                break;
+            }
+
+            //카메라 방향 전환
+            case R.id.imageButton4: {
+                switchCamera();
+                break;
+            }
+            //플래쉬 버튼
+            case R.id.imageButton3: {
+                break;
+            }
+            //갤러리
+            case R.id.imageButton2:
+            {
+                openGallary();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    public void switchCamera() {
+        if (mCameraId.equals(CAMERA_FRONT)) {
+            mCameraId = CAMERA_BACK;
+            closeCamera();
+            reopenCamera();
+        } else if (mCameraId.equals(CAMERA_BACK)) {
+            mCameraId = CAMERA_FRONT;
+            closeCamera();
+            reopenCamera();
+        }
+    }
+
+    public void reopenCamera() {
+        if (mTextureView.isAvailable()) {
+            openCamera();
+        } else {
+            mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
+        }
+    }
+
+    private void openGallary() {
+        Intent i = new Intent(Intent.ACTION_PICK);
+        i.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        i.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+// images on the SD card.
+
+// 결과를 리턴하는 Activity 호출
+        startActivityForResult(i, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check which request we're responding to
+        if (requestCode == 100) {
+            // Make sure the request was successful
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    // 선택한 이미지에서 비트맵 생성
+                    InputStream in = getActivity().getContentResolver().openInputStream(data.getData());
+                    Bitmap img = BitmapFactory.decodeStream(in);
+                    in.close();
+                    // 이미지 표시
+                    ImageView x = getActivity().findViewById(R.id.background_guide);
+                    x.setImageBitmap(img);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -746,10 +832,10 @@ public class Camera2RawFragment extends Fragment
             for (String cameraId : manager.getCameraIdList()) {
                 CameraCharacteristics characteristics
                         = manager.getCameraCharacteristics(cameraId);
-
+                Log.e("111",cameraId);
                 // We only use a camera that supports RAW in this sample.
                 if (!contains(characteristics.get(
-                                CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES),
+                        CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES),
                         CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES_RAW)) {
                     continue;
                 }
@@ -975,8 +1061,8 @@ public class Camera2RawFragment extends Fragment
 
             // Here, we create a CameraCaptureSession for camera preview.
             mCameraDevice.createCaptureSession(Arrays.asList(surface,
-                            mJpegImageReader.get().getSurface(),
-                            mRawImageReader.get().getSurface()), new CameraCaptureSession.StateCallback() {
+                    mJpegImageReader.get().getSurface(),
+                    mRawImageReader.get().getSurface()), new CameraCaptureSession.StateCallback() {
                         @Override
                         public void onConfigured(CameraCaptureSession cameraCaptureSession) {
                             synchronized (mCameraStateLock) {
@@ -1034,7 +1120,7 @@ public class Camera2RawFragment extends Fragment
         if (!mNoAFRun) {
             // If there is a "continuous picture" mode available, use it, otherwise default to AUTO.
             if (contains(mCharacteristics.get(
-                            CameraCharacteristics.CONTROL_AF_AVAILABLE_MODES),
+                    CameraCharacteristics.CONTROL_AF_AVAILABLE_MODES),
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)) {
                 builder.set(CaptureRequest.CONTROL_AF_MODE,
                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
@@ -1047,7 +1133,7 @@ public class Camera2RawFragment extends Fragment
         // If there is an auto-magical flash control mode available, use it, otherwise default to
         // the "on" mode, which is guaranteed to always be available.
         if (contains(mCharacteristics.get(
-                        CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES),
+                CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES),
                 CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)) {
             builder.set(CaptureRequest.CONTROL_AE_MODE,
                     CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
@@ -1058,7 +1144,7 @@ public class Camera2RawFragment extends Fragment
 
         // If there is an auto-magical white balance control mode available, use it.
         if (contains(mCharacteristics.get(
-                        CameraCharacteristics.CONTROL_AWB_AVAILABLE_MODES),
+                CameraCharacteristics.CONTROL_AWB_AVAILABLE_MODES),
                 CaptureRequest.CONTROL_AWB_MODE_AUTO)) {
             // Allow AWB to run auto-magically if this device supports this
             builder.set(CaptureRequest.CONTROL_AWB_MODE,
@@ -1450,18 +1536,18 @@ public class Camera2RawFragment extends Fragment
             // If saving the file succeeded, update MediaStore.
             if (success) {
                 MediaScannerConnection.scanFile(mContext, new String[]{mFile.getPath()},
-                /*mimeTypes*/null, new MediaScannerConnection.MediaScannerConnectionClient() {
-                    @Override
-                    public void onMediaScannerConnected() {
-                        // Do nothing
-                    }
+                        /*mimeTypes*/null, new MediaScannerConnection.MediaScannerConnectionClient() {
+                            @Override
+                            public void onMediaScannerConnected() {
+                                // Do nothing
+                            }
 
-                    @Override
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i(TAG, "Scanned " + path + ":");
-                        Log.i(TAG, "-> uri=" + uri);
-                    }
-                });
+                            @Override
+                            public void onScanCompleted(String path, Uri uri) {
+                                Log.i(TAG, "Scanned " + path + ":");
+                                Log.i(TAG, "-> uri=" + uri);
+                            }
+                        });
             }
         }
 
@@ -1680,7 +1766,7 @@ public class Camera2RawFragment extends Fragment
             if (option.getWidth() <= maxWidth && option.getHeight() <= maxHeight &&
                     option.getHeight() == option.getWidth() * h / w) {
                 if (option.getWidth() >= textureViewWidth &&
-                    option.getHeight() >= textureViewHeight) {
+                        option.getHeight() >= textureViewHeight) {
                     bigEnough.add(option);
                 } else {
                     notBigEnough.add(option);
