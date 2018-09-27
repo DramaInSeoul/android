@@ -101,24 +101,36 @@ public class MainActivity extends AppCompatActivity {
             String dramaName = (String) textView.getText();
             String dramaContext = (String) textView1.getText();
 
-            if (dramaName.equals("도깨비")) {
-                dramaName = "A Goblin";
-            } else if (dramaName.equals("쌈마이웨이")) {
-                dramaName = "BFight for My Way";
-            } else if (dramaName.equals("미녀의 탄생")) {
-                dramaName = "Cirth of a Beauty";
-            } else if (dramaName.equals("태양의 후예")) {
-                dramaName = "Descendants of The Sun";
-            } else if (dramaName.equals("닥터 이방인")) {
-                dramaName = "Doctor of Medicine";
-            } else if (dramaName.equals("별에서 온 그대")) {
-                dramaName = "My Love From the Star";
-            } else if (dramaName.equals("상속자")) {
-                dramaName = "The Inheritors";
-            } else if (dramaName.equals("함부로 애틋하게")) {
-                dramaName = "Uncontrollably Fond";
-            }else if (dramaName.equals("드라마 준비중")) {
-                dramaName = "zPreparing Image";
+            //우리가 사용하는 드라마가 도깨비,쌈마이웨이 두가지 인데
+            //Firebase 자동 정렬로 인해 데이터를 가져와서 새로 정렬하는데 시간이 오래걸려서 하드코딩 했음.
+            switch (dramaName) {
+                case "도깨비":
+                    dramaName = "A Goblin";
+                    break;
+                case "쌈마이웨이":
+                    dramaName = "BFight for My Way";
+                    break;
+                case "미녀의 탄생":
+                    dramaName = "Cirth of a Beauty";
+                    break;
+                case "태양의 후예":
+                    dramaName = "Descendants of The Sun";
+                    break;
+                case "닥터 이방인":
+                    dramaName = "Doctor of Medicine";
+                    break;
+                case "별에서 온 그대":
+                    dramaName = "My Love From the Star";
+                    break;
+                case "상속자":
+                    dramaName = "The Inheritors";
+                    break;
+                case "함부로 애틋하게":
+                    dramaName = "Uncontrollably Fond";
+                    break;
+                case "드라마 준비중":
+                    dramaName = "zPreparing Image";
+                    break;
             }
 
 

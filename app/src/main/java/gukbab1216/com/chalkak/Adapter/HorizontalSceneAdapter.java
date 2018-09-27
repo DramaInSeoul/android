@@ -38,6 +38,7 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Picture picture = mItems.get(position);
 
+        //가져온 사진 리스트에 맞게 view에 맵핑되는 부분.
         String posTitle = picture.getPosTitle();
         Glide.with(mContext).load(picture.getImgUrl()).into(holder.mThumbnail);
         holder.mTitle.setText(posTitle);
@@ -63,8 +64,10 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
 
         }
 
+        //지도 밑에 섬네일 사진 클릭하면 로그 찍힘.
         @Override
         public void onClick(View view) {
+            Log.d("섬네일", String.valueOf(mTitle));
         }
     }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import gukbab1216.com.chalkak.Model.DramaDto;
 import gukbab1216.com.chalkak.Model.Picture;
 
+//Firebase에서 데이터를 가져와 다음 ScenMapActivity로 넘기는 Activity // 레이아웃은 없음.
 public class MomentActivity extends AppCompatActivity implements ValueEventListener {
 
     FirebaseDatabase mFirebaseDatabase;
@@ -39,6 +40,7 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
     protected void onStart() {
         super.onStart();
         //이전 Activity 에서 가져온 Intent
+        //Activity 시작시 firebase 시작
         Intent intent = getIntent();
         dramaTitle = (String) intent.getExtras().get("dramaName");
         dramaDescription = (String) intent.getExtras().get("dramaContext");
@@ -53,10 +55,12 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
+        //드라마 이름에 맞게 사진을 가져와서 리스트에 담음
         for (DataSnapshot dataSnapshot1 : dataSnapshot.child("DramaData").child(dramaTitle).child("pictures").getChildren()) {
             Picture pictures = dataSnapshot1.getValue(Picture.class);
             picturesList.add(pictures);
         }
+        //각각의 드라마 이름에 맞게 한국 title & subImage 가져옴
         for (DataSnapshot dataSnapshot1 : dataSnapshot.child("DramaData").child(dramaTitle).getChildren()) {
             if (dataSnapshot1.getKey().equals("title")) {
                 korDramaName = (String) dataSnapshot1.getValue();
@@ -65,9 +69,11 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
                 subImageUrl = (String) dataSnapshot1.getValue();
             }
         }
+
         nextPage(dramaDescription);
     }
 
+    //다음 Activity 로 넘기는 부분.
     private void nextPage(String dramaDescription) {
 
         Intent it = new Intent(this, SceneMapActivity.class);

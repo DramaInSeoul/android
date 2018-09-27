@@ -74,10 +74,13 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        //기존의 운현궁 위도와 경도를 받아서 시작지점을 만들었음
+        //이후 밑에 섬네일 이미지 클릭시 위도와 경도가 비동기적으로 바뀌도록 해야함.
         LatLng position = new LatLng(37.576034, 126.98705199999995);
         mMap.addMarker(new MarkerOptions().position(position).title(dramaTitle + "촬영지")).showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
 
+        //구글지도 줌 확대하는 부분 1~23까지의 레벨이 있음.
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
         mMap.moveCamera(zoom);
 
@@ -85,6 +88,9 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     private void initHorizontalScene() {
+
+        //이부분이 Firebase DB에서 가져온 pictureArrayList를 Adapter에 넘기는 부분인데
+        //ArrayList 안에 있는 사진들의 Position을 사용하는 방법을 모르겠음.
         mBinding.scenePanel.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mBinding.scenePanel.setHasFixedSize(true);
         mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
