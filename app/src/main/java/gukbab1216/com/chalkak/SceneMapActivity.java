@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +34,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mMap;
     static ArrayList<Picture> pictureArrayList;
     String dramaTitle;
+    HorizontalSceneAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         Glide.with(this).load(subDramaImage).into(imageView);
 
         FloatingActionButton nextFabBtn = findViewById(R.id.nextCameraFloatingButton);
+
         nextFabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,18 +75,21 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         mMap = googleMap;
 
         LatLng position = new LatLng(37.576034, 126.98705199999995);
-        mMap.addMarker(new MarkerOptions().position(position).title(dramaTitle + "촬영지"));
+        mMap.addMarker(new MarkerOptions().position(position).title(dramaTitle + "촬영지")).showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
+        mMap.moveCamera(zoom);
+
 
     }
 
     private void initHorizontalScene() {
         mBinding.scenePanel.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mBinding.scenePanel.setHasFixedSize(true);
-        HorizontalSceneAdapter mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
+        mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
         mBinding.scenePanel.setAdapter(mAdapter);
 
     }
-
 
 }

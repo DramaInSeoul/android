@@ -49,10 +49,8 @@ public class MainActivity extends AppCompatActivity {
         };
         ActivityCompat.requestPermissions(this, neededPermissions, 0);
 
-        TextView dramaNameTextView = findViewById(R.id.toolbarAppName);
         TextView mainContext = findViewById(R.id.mainContext);
 
-        dramaNameTextView.setText("Drama In Seoul");
         mainContext.setText("당신의 드라마를 선택하세요");
 
         myOnClickListener = new MyOnClickListener(this);

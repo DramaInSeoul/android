@@ -65,7 +65,6 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
 
         @Override
         public void onClick(View view) {
-            System.out.println(mTitle.getText());
         }
     }
 }
