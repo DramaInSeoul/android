@@ -140,10 +140,16 @@ import okhttp3.Response;
 public class Camera2RawFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
-    private boolean flashFlag=false;
+    private boolean flashFlag = false;
 
     public static final String CAMERA_FRONT = "1";
     public static final String CAMERA_BACK = "0";
+
+    String filterImageUrl = "";
+    String afterImageUrl = "";
+
+    int dramaImgNum = 0;
+    int dramaNum = 0;
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -545,6 +551,8 @@ public class Camera2RawFragment extends Fragment
                     getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                     "JPEG_" + currentDateTime + ".jpg");
 
+            afterImageUrl = String.valueOf(jpegFile);
+
             // Look up the ImageSaverBuilder for this request and update it with the file name
             // based on the capture start time.
             ImageSaver.ImageSaverBuilder jpegBuilder;
@@ -604,19 +612,24 @@ public class Camera2RawFragment extends Fragment
 
                     Request request = new Request.Builder()
                             .url(URL)
-                            .addHeader("Content-Type","application/json")
-                            .addHeader("name", "1")
-                            .addHeader("no", "1")
+                            .addHeader("Content-Type", "application/json")
+                            .addHeader("name", String.valueOf(dramaNum))
+                            .addHeader("no", String.valueOf(dramaImgNum))
                             .post(requestBody)
                             .build();
 
                     try (Response response = client.newCall(request).execute()) {
-                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                        if (!response.isSuccessful())
+                            throw new IOException("Unexpected code " + response);
                         JSONObject jsonObject = new JSONObject(response.body().string()); //여기에 담김, jsonObject 받아오면됨
 
                         Intent intent = new Intent(getContext(), ResultActivity.class);
+                        intent.putExtra("filterImageUrl", filterImageUrl);
+                        intent.putExtra("afterImageUrl", afterImageUrl);
+                        intent.putExtra("jsonObject", jsonObject.toString());
                         startActivity(intent);
-                        Log.d("V", "123");
+                        Log.d("BeforeJson", jsonObject.toString());
+
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
@@ -648,7 +661,7 @@ public class Camera2RawFragment extends Fragment
         public void handleMessage(Message msg) {
             Activity activity = getActivity();
             if (activity != null) {
-                Toast.makeText(activity, (String) msg.obj, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, (String) msg.obj, Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -670,7 +683,11 @@ public class Camera2RawFragment extends Fragment
         Intent intent = ((Activity) mContext).getIntent();
 
         String filterImgUrl = (String) intent.getExtras().get("filterImg");
+        filterImageUrl = filterImgUrl;
         String filterLineUrl = (String) intent.getExtras().get("filterLine");
+
+        dramaImgNum = (int) intent.getExtras().get("dramaImgNum");
+        dramaNum = (int) intent.getExtras().get("dramaNum");
 
         ImageView filterImageView = ((Activity) mContext).findViewById(R.id.background_guide);
         ImageView filterLinedView = ((Activity) mContext).findViewById(R.id.outline_guide);
@@ -765,8 +782,7 @@ public class Camera2RawFragment extends Fragment
                 break;
             }
             //갤러리
-            case R.id.imageButton2:
-            {
+            case R.id.imageButton2: {
                 openGallary();
                 break;
             }
@@ -844,7 +860,7 @@ public class Camera2RawFragment extends Fragment
             for (String cameraId : manager.getCameraIdList()) {
                 CameraCharacteristics characteristics
                         = manager.getCameraCharacteristics(cameraId);
-                Log.e("111",cameraId);
+                Log.e("111", cameraId);
                 // We only use a camera that supports RAW in this sample.
                 if (!contains(characteristics.get(
                         CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES),
@@ -983,7 +999,7 @@ public class Camera2RawFragment extends Fragment
     private void showMissingPermissionError() {
         Activity activity = getActivity();
         if (activity != null) {
-            Toast.makeText(activity, R.string.request_permission, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(activity, R.string.request_permission, Toast.LENGTH_SHORT).show();
             activity.finish();
         }
     }

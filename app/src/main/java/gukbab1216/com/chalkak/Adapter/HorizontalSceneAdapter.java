@@ -61,11 +61,15 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
 
                 String filterImg = "";
                 String filterLine = "";
+                int dramaImgNum;
+                int dramaNum;
 
                 filterImg = mItems.get(position).getFilterImg();
                 filterLine = mItems.get(position).getFilterLine();
                 latitude = mItems.get(position).getLatitude();
                 longitude = mItems.get(position).getLongitude();
+                dramaImgNum = mItems.get(position).getDramaImgNum();
+                dramaNum = mItems.get(position).getDramaNum();
 
                 if (!flag[position]) {
                     int pos = position;
@@ -86,6 +90,8 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
                     Intent it = new Intent(mContext, CameraActivity.class);
                     it.putExtra("filterImg", filterImg);
                     it.putExtra("filterLine", filterLine);
+                    it.putExtra("dramaImgNum", dramaImgNum);
+                    it.putExtra("dramaNum", dramaNum);
                     mContext.startActivity(it);
                     flag[position] = false;
                 }

@@ -10,6 +10,8 @@ public class Picture implements Serializable {
     String posTitle;
     String filterImg;
     String filterLine;
+    int dramaImgNum;
+    int dramaNum;
 
     public String getImgUrl() {
         return imgUrl;
@@ -59,6 +61,22 @@ public class Picture implements Serializable {
         this.filterLine = filterLine;
     }
 
+    public int getDramaImgNum() {
+        return dramaImgNum;
+    }
+
+    public void setDramaImgNum(int dramaImgNum) {
+        this.dramaImgNum = dramaImgNum;
+    }
+
+    public int getDramaNum() {
+        return dramaNum;
+    }
+
+    public void setDramaNum(int dramaNum) {
+        this.dramaNum = dramaNum;
+    }
+
     @Override
     public String toString() {
         return "Picture{" +
@@ -68,6 +86,9 @@ public class Picture implements Serializable {
                 ", posTitle='" + posTitle + '\'' +
                 ", filterImg='" + filterImg + '\'' +
                 ", filterLine='" + filterLine + '\'' +
+                ", dramaImgNum=" + dramaImgNum +
+                ", dramaNum=" + dramaNum +
                 '}';
     }
+
 }
