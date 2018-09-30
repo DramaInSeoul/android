@@ -18,7 +18,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <ImageButton
-            android:id="@+id/imageButton7"
+            android:id="@+id/image_back_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginBottom="8dp"
@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout_my_toolbar" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffba59"
@@ -127,7 +127,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:max="100"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/back_button"
         app:layout_constraintStart_toStartOf="@+id/back_ProgressBar"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 

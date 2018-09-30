@@ -1,16 +1,19 @@
 package gukbab1216.com.chalkak;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -25,6 +28,23 @@ public class ResultActivity extends AppCompatActivity {
         ProgressBar pos_progressBar = findViewById(R.id.pos_progressBar);
         TextView backTextView = findViewById(R.id.back_textView);
         TextView posTextView = findViewById(R.id.pos_textView);
+        Button button = findViewById(R.id.back_button);
+        ImageButton imgButton = findViewById(R.id.image_back_button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        imgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         try {
