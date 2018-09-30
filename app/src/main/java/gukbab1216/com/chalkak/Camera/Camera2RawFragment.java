@@ -72,6 +72,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -657,6 +659,18 @@ public class Camera2RawFragment extends Fragment
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+
+        Intent intent = ((Activity) mContext).getIntent();
+
+        String filterImgUrl = (String) intent.getExtras().get("filterImg");
+        String filterLineUrl = (String) intent.getExtras().get("filterLine");
+
+        ImageView filterImageView = ((Activity) mContext).findViewById(R.id.background_guide);
+        ImageView filterLinedView = ((Activity) mContext).findViewById(R.id.outline_guide);
+
+        Glide.with(this).load(filterImgUrl).into(filterImageView);
+        Glide.with(this).load(filterLineUrl).into(filterLinedView);
+
 
         view.findViewById(R.id.capture).setOnClickListener(this);
         view.findViewById(R.id.imageButton).setOnClickListener(this);
