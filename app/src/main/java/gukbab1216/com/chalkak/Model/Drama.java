@@ -1,4 +1,4 @@
-package gukbab1216.com.chalkak.model;
+package gukbab1216.com.chalkak.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

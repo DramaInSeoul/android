@@ -2,9 +2,9 @@ package gukbab1216.com.chalkak;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,9 +21,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import gukbab1216.com.chalkak.adapter.HorizontalSceneAdapter;
+import gukbab1216.com.chalkak.Adapter.HorizontalSceneAdapter;
+import gukbab1216.com.chalkak.Model.Picture;
 import gukbab1216.com.chalkak.databinding.ActivitySceneMapBinding;
-import gukbab1216.com.chalkak.model.Picture;
 
 public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ActivitySceneMapBinding mBinding;

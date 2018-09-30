@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -21,9 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import gukbab1216.com.chalkak.adapter.ListDramaAdapter;
+import gukbab1216.com.chalkak.Adapter.ListDramaAdapter;
+import gukbab1216.com.chalkak.Model.Drama;
 import gukbab1216.com.chalkak.databinding.ActivityMainBinding;
-import gukbab1216.com.chalkak.model.Drama;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;

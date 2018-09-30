@@ -1,10 +1,9 @@
-package gukbab1216.com.chalkak.adapter;
+package gukbab1216.com.chalkak.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,13 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
 import gukbab1216.com.chalkak.CameraActivity;
+import gukbab1216.com.chalkak.Model.Picture;
 import gukbab1216.com.chalkak.R;
-import gukbab1216.com.chalkak.model.Picture;
 
 public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalSceneAdapter.ViewHolder> {
     private List<Picture> mItems;

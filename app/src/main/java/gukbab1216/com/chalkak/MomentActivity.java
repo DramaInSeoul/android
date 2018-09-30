@@ -1,8 +1,8 @@
 package gukbab1216.com.chalkak;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import gukbab1216.com.chalkak.model.Picture;
+import gukbab1216.com.chalkak.Model.Picture;
 
 public class MomentActivity extends AppCompatActivity implements ValueEventListener {
 

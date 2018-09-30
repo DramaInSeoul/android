@@ -1,4 +1,4 @@
-package gukbab1216.com.chalkak.adapter;
+package gukbab1216.com.chalkak.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import gukbab1216.com.chalkak.MainActivity;
+import gukbab1216.com.chalkak.Model.Drama;
 import gukbab1216.com.chalkak.R;
-import gukbab1216.com.chalkak.model.Drama;
 
 public class ListDramaAdapter extends RecyclerView.Adapter<ListDramaAdapter.MyViewHolder> {
 
