@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -98,6 +99,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import gukbab1216.com.chalkak.R;
+import gukbab1216.com.chalkak.ResultActivity;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -588,6 +590,8 @@ public class Camera2RawFragment extends Fragment
                 finishedCaptureLocked();
             }
 
+            final ProgressDialog detectionProgressDialog = new ProgressDialog(getContext());
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -609,6 +613,9 @@ public class Camera2RawFragment extends Fragment
                     try (Response response = client.newCall(request).execute()) {
                         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
                         JSONObject jsonObject = new JSONObject(response.body().string()); //여기에 담김, jsonObject 받아오면됨
+
+                        Intent intent = new Intent(getContext(), ResultActivity.class);
+                        startActivity(intent);
                         Log.d("V", "123");
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
