@@ -5,9 +5,11 @@ import java.io.Serializable;
 public class Picture implements Serializable {
 
     String imgUrl;
-    int latitude;
-    int longitude;
+    float latitude;
+    float longitude;
     String posTitle;
+    String filterImg;
+    String filterLine;
 
     public String getImgUrl() {
         return imgUrl;
@@ -17,19 +19,19 @@ public class Picture implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public int getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
@@ -41,6 +43,22 @@ public class Picture implements Serializable {
         this.posTitle = posTitle;
     }
 
+    public String getFilterImg() {
+        return filterImg;
+    }
+
+    public void setFilterImg(String filterImg) {
+        this.filterImg = filterImg;
+    }
+
+    public String getFilterLine() {
+        return filterLine;
+    }
+
+    public void setFilterLine(String filterLine) {
+        this.filterLine = filterLine;
+    }
+
     @Override
     public String toString() {
         return "Picture{" +
@@ -48,6 +66,8 @@ public class Picture implements Serializable {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", posTitle='" + posTitle + '\'' +
+                ", filterImg='" + filterImg + '\'' +
+                ", filterLine='" + filterLine + '\'' +
                 '}';
     }
 }

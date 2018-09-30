@@ -1,6 +1,7 @@
 package gukbab1216.com.chalkak.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+import gukbab1216.com.chalkak.CameraActivity;
 import gukbab1216.com.chalkak.R;
 import gukbab1216.com.chalkak.model.Picture;
 
@@ -23,11 +29,14 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
     private List<Picture> mItems;
     private Context mContext;
     private GoogleMap mGmap;
+    boolean[] flag = new boolean[3];
+    float latitude = 0;
+    float longitude = 0;
 
-    public HorizontalSceneAdapter(Context context, List<Picture> items, GoogleMap gmap) {
+    public HorizontalSceneAdapter(Context context, List<Picture> items, GoogleMap googleMap) {
         mItems = items;
         mContext = context;
-        mGmap = gmap;
+        mGmap = googleMap;
     }
 
     @NonNull
@@ -36,6 +45,7 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scene_map, parent, false);
         return new ViewHolder(itemView);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
@@ -46,35 +56,42 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         Glide.with(mContext).load(picture.getImgUrl()).into(holder.mThumbnail);
         holder.mTitle.setText(posTitle);
 
+
         holder.mThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch(position) {
-                    case 0:
-                        Log.d("TAGTAGTAG", String.valueOf(mItems.get(0).getPosTitle()));
 
-                        break;
+                String filterImg = "";
+                String filterLine = "";
 
-                    case 1:
-                        Log.d("TAGTAGTAG", String.valueOf(mItems.get(1).getPosTitle()));
-                        break;
+                filterImg = mItems.get(position).getFilterImg();
+                filterLine = mItems.get(position).getFilterLine();
+                latitude = mItems.get(position).getLatitude();
+                longitude = mItems.get(position).getLongitude();
 
-                    case 2:
-                        Log.d("TAGTAGTAG", String.valueOf(mItems.get(2).getPosTitle()));
-                        break;
+                if (!flag[position]) {
+                    int pos = position;
+                    latitude = mItems.get(pos).getLatitude();
+                    longitude = mItems.get(pos).getLongitude();
 
-                    default:
-                        Log.d("TAGTAGTAG", String.valueOf(position));
+                    LatLng position = new LatLng(latitude, longitude);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
+
+                    mGmap.addMarker(new MarkerOptions().position(position).title(mItems.get(pos).getPosTitle())).showInfoWindow();
+                    mGmap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                    mGmap.moveCamera(zoom);
+
+                    flag[pos] = true;
+
+                } else if (flag[position]) {
+
+                    Intent it = new Intent(mContext, CameraActivity.class);
+                    it.putExtra("filterImg", filterImg);
+                    it.putExtra("filterLine", filterLine);
+                    mContext.startActivity(it);
+                    flag[position] = false;
                 }
-            }
-        });
 
-        mGmap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //구글맵 자체가 로딩이안되서 태그 확인을 못함
-                Log.d("TAGTAGTAG", String.valueOf(marker.getTitle()));
-                return false;
             }
         });
 
@@ -96,5 +113,7 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
             mThumbnail = view.findViewById(R.id.thumbnail_scene);
             mTitle = view.findViewById(R.id.title_scene);
         }
+
     }
 }
+
