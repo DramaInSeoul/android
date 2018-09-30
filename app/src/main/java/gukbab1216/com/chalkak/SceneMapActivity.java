@@ -50,15 +50,6 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         ImageView imageView = findViewById(R.id.thumbnail_drama);
         Glide.with(this).load(subDramaImage).into(imageView);
 
-        FloatingActionButton nextFabBtn = findViewById(R.id.nextCameraFloatingButton);
-
-        nextFabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SceneMapActivity.this, CameraActivity.class));
-            }
-        });
-
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
