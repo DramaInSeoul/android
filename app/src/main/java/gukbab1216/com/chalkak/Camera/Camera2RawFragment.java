@@ -74,6 +74,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -545,27 +548,25 @@ public class Camera2RawFragment extends Fragment
                 @Override
                 public void run() {
                     // Example data
-                    final String URL = "http://192.168.1.136:3000/image";
-                    jpegFile.length();
+                    final String URL = "http://18.216.88.220:8000/image";
 
-                    Log.i("TAGFileFileFile", String.valueOf(jpegFile.length()));
-                    Log.i("TAGFileFileFile", String.valueOf(jpegFile.getName()));
-                    Log.i("TAGFileFileFile", String.valueOf(jpegFile.getPath()));
-
-                    OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(15, TimeUnit.SECONDS)
+                    OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS)
                             .readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
                     RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), jpegFile);
 
                     Request request = new Request.Builder()
                             .url(URL)
+                            .addHeader("Content-Type","application/json")
+                            .addHeader("name", "1")
+                            .addHeader("no", "1")
                             .post(requestBody)
                             .build();
 
                     try (Response response = client.newCall(request).execute()) {
                         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                        JSONObject jsonObject = new JSONObject(response.body().string()); //여기에 담김, jsonObject 받아오면됨
 
-                        System.out.println(response.body().string());
-                    } catch (IOException e) {
+                    } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
                 }
