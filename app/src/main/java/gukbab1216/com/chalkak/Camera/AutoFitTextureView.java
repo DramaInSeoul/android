@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package gukbab1216.com.chalkak.camera;
+package gukbab1216.com.chalkak.Camera;
 
 import android.content.Context;
 import android.util.AttributeSet;

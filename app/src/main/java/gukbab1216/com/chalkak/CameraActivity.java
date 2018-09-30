@@ -1,11 +1,12 @@
 package gukbab1216.com.chalkak;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-import gukbab1216.com.chalkak.camera.Camera2RawFragment;
+import gukbab1216.com.chalkak.Camera.Camera2RawFragment;
+import gukbab1216.com.chalkak.R;
 import gukbab1216.com.chalkak.databinding.ActivityCameraBinding;
 
 public class CameraActivity extends AppCompatActivity {
@@ -14,7 +15,10 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_camera);
 
         if (null == savedInstanceState) {
