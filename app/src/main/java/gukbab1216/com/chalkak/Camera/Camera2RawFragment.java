@@ -543,35 +543,6 @@ public class Camera2RawFragment extends Fragment
                     getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
                     "JPEG_" + currentDateTime + ".jpg");
 
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // Example data
-                    final String URL = "http://18.216.88.220:8000/image";
-
-                    OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS)
-                            .readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), jpegFile);
-
-                    Request request = new Request.Builder()
-                            .url(URL)
-                            .addHeader("Content-Type","application/json")
-                            .addHeader("name", "1")
-                            .addHeader("no", "1")
-                            .post(requestBody)
-                            .build();
-
-                    try (Response response = client.newCall(request).execute()) {
-                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                        JSONObject jsonObject = new JSONObject(response.body().string()); //여기에 담김, jsonObject 받아오면됨
-
-                    } catch (JSONException | IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
             // Look up the ImageSaverBuilder for this request and update it with the file name
             // based on the capture start time.
             ImageSaver.ImageSaverBuilder jpegBuilder;
@@ -616,6 +587,34 @@ public class Camera2RawFragment extends Fragment
 
                 finishedCaptureLocked();
             }
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Example data
+                    final String URL = "http://18.216.88.220:8000/image";
+
+                    OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS)
+                            .readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), jpegBuilder.mFile);
+
+                    Request request = new Request.Builder()
+                            .url(URL)
+                            .addHeader("Content-Type","application/json")
+                            .addHeader("name", "1")
+                            .addHeader("no", "1")
+                            .post(requestBody)
+                            .build();
+
+                    try (Response response = client.newCall(request).execute()) {
+                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                        JSONObject jsonObject = new JSONObject(response.body().string()); //여기에 담김, jsonObject 받아오면됨
+                        Log.d("V", "123");
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
             showToast(sb.toString());
         }
