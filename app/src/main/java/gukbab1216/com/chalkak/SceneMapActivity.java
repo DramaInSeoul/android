@@ -2,15 +2,13 @@ package gukbab1216.com.chalkak;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
@@ -23,10 +21,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import gukbab1216.com.chalkak.Adapter.HorizontalSceneAdapter;
-import gukbab1216.com.chalkak.Model.Drama;
-import gukbab1216.com.chalkak.Model.Picture;
+import gukbab1216.com.chalkak.adapter.HorizontalSceneAdapter;
 import gukbab1216.com.chalkak.databinding.ActivitySceneMapBinding;
+import gukbab1216.com.chalkak.model.Picture;
 
 public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ActivitySceneMapBinding mBinding;
@@ -47,9 +44,8 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         pictureArrayList = (ArrayList<Picture>) intent.getSerializableExtra("pictureList");
         String dramaDescription = (String) intent.getExtras().get("dramaContext");
         String subDramaImage = (String) intent.getExtras().get("subImageUrl");
-
-
-        mBinding.setDrama(new Drama(dramaTitle, "", 0, dramaDescription));
+        mBinding.titleDrama.setText(dramaTitle);
+        mBinding.summaryDrama.setText(dramaDescription);
 
         ImageView imageView = findViewById(R.id.thumbnail_drama);
         Glide.with(this).load(subDramaImage).into(imageView);
@@ -60,15 +56,14 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SceneMapActivity.this, CameraActivity.class));
-
             }
         });
 
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        initHorizontalScene();
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -85,6 +80,7 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         mMap.moveCamera(zoom);
 
 
+        initHorizontalScene();
     }
 
     private void initHorizontalScene() {
@@ -93,9 +89,8 @@ public class SceneMapActivity extends AppCompatActivity implements OnMapReadyCal
         //ArrayList 안에 있는 사진들의 Position을 사용하는 방법을 모르겠음.
         mBinding.scenePanel.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         mBinding.scenePanel.setHasFixedSize(true);
-        mAdapter = new HorizontalSceneAdapter(this, pictureArrayList);
+        mAdapter = new HorizontalSceneAdapter(this, pictureArrayList, mMap);
         mBinding.scenePanel.setAdapter(mAdapter);
 
     }
-
 }

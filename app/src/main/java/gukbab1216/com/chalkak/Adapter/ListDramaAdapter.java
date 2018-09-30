@@ -1,4 +1,4 @@
-package gukbab1216.com.chalkak.Adapter;
+package gukbab1216.com.chalkak.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,27 +14,23 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import gukbab1216.com.chalkak.MainActivity;
-import gukbab1216.com.chalkak.Model.DramaDto;
 import gukbab1216.com.chalkak.R;
+import gukbab1216.com.chalkak.model.Drama;
 
-/**
- * Created by wee on 2018. 8. 18..
- */
+public class ListDramaAdapter extends RecyclerView.Adapter<ListDramaAdapter.MyViewHolder> {
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
-
-    Context context;
-    private ArrayList<DramaDto> dataSet;
+    private Context mContext;
+    private ArrayList<Drama> mDataset;
 
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName;
         TextView textViewDescription;
         ImageView imageView;
 
 
-        MyViewHolder(View itemView) {
+        private MyViewHolder(View itemView) {
             super(itemView);
             this.textViewName = itemView.findViewById(R.id.textViewName);
             this.textViewDescription = itemView.findViewById(R.id.textDramaContext);
@@ -43,15 +39,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     }
 
-    public CustomAdapter(Context c, ArrayList<DramaDto> data) {
-        this.context = c;
-        this.dataSet = data;
+    public ListDramaAdapter(ArrayList<Drama> dataset) {
+        mDataset = dataset;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cards_layout, parent, false);
+        mContext = view.getContext();
         view.setOnClickListener(MainActivity.myOnClickListener);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
@@ -61,14 +57,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         TextView textViewName = holder.textViewName;
         TextView textViewDescription = holder.textViewDescription;
-        textViewName.setText(dataSet.get(position).getTitle());
-        textViewDescription.setText(dataSet.get(position).getDescription());
-        Glide.with(context).load(dataSet.get(position).getImage()).into(holder.imageView);
+        textViewName.setText(mDataset.get(position).getTitle());
+        textViewDescription.setText(mDataset.get(position).getDescription());
+        Glide.with(mContext).load(mDataset.get(position).getImage()).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return mDataset.size();
     }
 
 }

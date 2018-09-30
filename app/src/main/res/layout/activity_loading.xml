@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/pick_d_splash"
-        tools:context=".IntroActivity">
+        tools:context=".LoadingActivity">
 
 
         <TextView

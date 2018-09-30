@@ -1,15 +1,15 @@
 package gukbab1216.com.chalkak;
 
-
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,59 +21,85 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import gukbab1216.com.chalkak.Adapter.CustomAdapter;
-import gukbab1216.com.chalkak.Model.DramaDto;
+import gukbab1216.com.chalkak.adapter.ListDramaAdapter;
+import gukbab1216.com.chalkak.databinding.ActivityMainBinding;
+import gukbab1216.com.chalkak.model.Drama;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static RecyclerView recyclerView;
+    private ActivityMainBinding mBinding;
     public static View.OnClickListener myOnClickListener;
 
     //firebase
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mRef;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseReference;
 
-    ArrayList<DramaDto> list;
-    CustomAdapter customAdapter;
+    //List of Drama
+    private ArrayList<Drama> mDataset;
+    private ListDramaAdapter mListDramaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        //permission
-        String[] neededPermissions = {
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-        ActivityCompat.requestPermissions(this, neededPermissions, 0);
+        initialize();
+        initDramaList();
+    }
 
-        TextView mainContext = findViewById(R.id.mainContext);
+    private void initialize() {
+        myOnClickListener = new MyOnClickListener(this, mBinding);
 
-        mainContext.setText("당신의 드라마를 선택하세요");
+        mBinding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        myOnClickListener = new MyOnClickListener(this);
+            }
 
-        recyclerView = findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchText = mBinding.etSearch.getText().toString().trim();
+                ArrayList<Drama> searchedArray = new ArrayList<>();
+                for (Drama dm : mDataset) {
+                    if (dm.getTitle().contains(searchText)) {
+                        searchedArray.add(dm);
+                    }
+                }
+                if (searchText.isEmpty()) {
+                    mBinding.recyclerView.setAdapter(new ListDramaAdapter(mDataset));
+                } else {
+                    mBinding.recyclerView.setAdapter(new ListDramaAdapter(searchedArray));
+                }
+            }
+        });
+
+    }
+
+    private void initDramaList() {
+        mBinding.recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mListDramaAdapter = new ListDramaAdapter(mDataset);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mRef = mFirebaseDatabase.getReference("DramaData");
-        list = new ArrayList<>();
+        mDatabaseReference = mFirebaseDatabase.getReference("DramaData");
+        mDataset = new ArrayList<>();
 
         //get Drama Data
-        mRef.addValueEventListener(new ValueEventListener() {
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    DramaDto dramaDto = dataSnapshot1.getValue(DramaDto.class);
-                    list.add(dramaDto);
+                    Drama drama = dataSnapshot1.getValue(Drama.class);
+                    mDataset.add(drama);
                 }
-                customAdapter = new CustomAdapter(MainActivity.this, list);
-                recyclerView.setAdapter(customAdapter);
+                mListDramaAdapter = new ListDramaAdapter(mDataset);
+                mBinding.recyclerView.setAdapter(mListDramaAdapter);
             }
 
             @Override
@@ -83,18 +109,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     public static class MyOnClickListener extends Activity implements View.OnClickListener {
 
         private final Context context;
+        private ActivityMainBinding mBinding;
 
-        private MyOnClickListener(Context context) {
+        private MyOnClickListener(Context context, ActivityMainBinding binding) {
             this.context = context;
+            mBinding = binding;
         }
 
         @Override
         public void onClick(View view) {
-            int selectedItemPosition = recyclerView.getChildPosition(view);
-            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
+            int selectedItemPosition = mBinding.recyclerView.getChildPosition(view);
+            RecyclerView.ViewHolder viewHolder = mBinding.recyclerView.findViewHolderForAdapterPosition(selectedItemPosition);
 
             TextView textView = viewHolder.itemView.findViewById(R.id.textViewName);
             TextView textView1 = viewHolder.itemView.findViewById(R.id.textDramaContext);

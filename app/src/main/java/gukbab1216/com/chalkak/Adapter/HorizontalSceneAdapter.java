@@ -1,4 +1,4 @@
-package gukbab1216.com.chalkak.Adapter;
+package gukbab1216.com.chalkak.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,22 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
-import gukbab1216.com.chalkak.Model.Picture;
 import gukbab1216.com.chalkak.R;
+import gukbab1216.com.chalkak.model.Picture;
 
 public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalSceneAdapter.ViewHolder> {
     private List<Picture> mItems;
     private Context mContext;
+    private GoogleMap mGmap;
 
-    public HorizontalSceneAdapter(Context context, List<Picture> items) {
+    public HorizontalSceneAdapter(Context context, List<Picture> items, GoogleMap gmap) {
         mItems = items;
         mContext = context;
+        mGmap = gmap;
     }
 
     @NonNull
@@ -43,6 +46,39 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         Glide.with(mContext).load(picture.getImgUrl()).into(holder.mThumbnail);
         holder.mTitle.setText(posTitle);
 
+        holder.mThumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(position) {
+                    case 0:
+                        Log.d("TAGTAGTAG", String.valueOf(mItems.get(0).getPosTitle()));
+
+                        break;
+
+                    case 1:
+                        Log.d("TAGTAGTAG", String.valueOf(mItems.get(1).getPosTitle()));
+                        break;
+
+                    case 2:
+                        Log.d("TAGTAGTAG", String.valueOf(mItems.get(2).getPosTitle()));
+                        break;
+
+                    default:
+                        Log.d("TAGTAGTAG", String.valueOf(position));
+                }
+            }
+        });
+
+        mGmap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                //구글맵 자체가 로딩이안되서 태그 확인을 못함
+                Log.d("TAGTAGTAG", String.valueOf(marker.getTitle()));
+                return false;
+            }
+        });
+
+
     }
 
     @Override
@@ -50,7 +86,7 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
         return mItems.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mThumbnail;
         TextView mTitle;
@@ -59,15 +95,6 @@ public class HorizontalSceneAdapter extends RecyclerView.Adapter<HorizontalScene
             super(view);
             mThumbnail = view.findViewById(R.id.thumbnail_scene);
             mTitle = view.findViewById(R.id.title_scene);
-            mThumbnail.setOnClickListener(this);
-            mTitle.setOnClickListener(this);
-
-        }
-
-        //지도 밑에 섬네일 사진 클릭하면 로그 찍힘.
-        @Override
-        public void onClick(View view) {
-            Log.d("섬네일", String.valueOf(mTitle));
         }
     }
 }

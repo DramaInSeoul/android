@@ -1,9 +1,8 @@
 package gukbab1216.com.chalkak;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,10 +12,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import gukbab1216.com.chalkak.Model.DramaDto;
-import gukbab1216.com.chalkak.Model.Picture;
+import gukbab1216.com.chalkak.model.Picture;
 
-//Firebase에서 데이터를 가져와 다음 ScenMapActivity로 넘기는 Activity // 레이아웃은 없음.
 public class MomentActivity extends AppCompatActivity implements ValueEventListener {
 
     FirebaseDatabase mFirebaseDatabase;
@@ -28,13 +25,14 @@ public class MomentActivity extends AppCompatActivity implements ValueEventListe
     String subImageUrl;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_moment);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         picturesList = new ArrayList<>();
-
     }
+
 
     @Override
     protected void onStart() {
