@@ -4,8 +4,8 @@
   ![](./app/src/main/res/drawable/readme/app_picture01.png)
   
   
-# 팀명 씬스틸러 - Android App
-# "드라마 인 서울"
+# 팀명 "씬스틸러" 
+# 앱명 "드라마 인 서울" - Android App
 
 
 - ### 개요
