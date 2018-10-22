@@ -1,6 +1,7 @@
+
+- ### 2018년 서울시 앱 공모전 출품작(드라마 인 서울 [DramaInSeoul(logo)])
+
 - ### 드라마 인 서울 [DramaInSeoul(logo)]
-
-
   ![](./app/src/main/res/drawable/readme/app_picture01.png)
   
   
